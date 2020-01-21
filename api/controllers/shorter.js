@@ -1,13 +1,14 @@
-const services = require('../../services/index');
+const services = require('../../services');
+const models = require('../models');
 
 const shorter = {
     makeItShorter: async function (req, res, next) {
         try {
-            const checkUrl = await services.shortener.isURLValid(req, res, next);
+            const userUrl = await services.shortener.isURLValid(req, res, next);
 
-            if (checkUrl) {
-                //TODO Make it shorter
-                res.status(200).json('short url');
+            if (userUrl) {
+                const shortUrl = await models.urlMapper.add(userUrl);
+                res.status(200).json(`https://ilad-co.ir/shorter/${shortUrl}`);
             }
             else {
                 res.status(422).json('Check your input, e.g https://domain.com');
@@ -19,13 +20,11 @@ const shorter = {
     },
     revertToOriginal: async function (req, res, next) {
         try {
+            const userUrl = await services.shortener.isURLValidToReverse(req, res, next);
 
-            const checkUrl = await services.shortener.isURLValidToReverse(req, res, next);
-
-            //TODO back to Original
-
-            if (checkUrl) {
-                res.status(200).json('long url');
+            if (userUrl) {
+                const originalUrl = await models.urlMapper.get(userUrl);
+                res.status(200).json(originalUrl);
             }
             else {
                 res.status(422).json('Where did you get the link? Sorry, it does\'nt look valid!');

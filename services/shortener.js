@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const urlValidation = require('valid-url');
+const shortId = require('shortid');
 
 const shortener = {
     isURLValid: async function (req, res, next) {
@@ -22,9 +23,13 @@ const shortener = {
     },
     isURLValidToReverse: function (req, res, next) {
         const userURL = url.parse(req.params.url);
-        if (!userURL) return false;
+        if (!userURL || !shortId.isValid(userURL.href)) return false;
 
-        return (userURL.pathname.startsWith('ed'));
+        // ed is just a simple prefix; nothing especial;
+        return (userURL.pathname.startsWith('ed') && userURL.href);
+    },
+    shortIt: function (url) {
+        return 'ed' + shortId.generate().replace('_', '').toLowerCase();
     }
 };
 
