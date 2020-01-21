@@ -1,2 +1,2 @@
 # shortener
-URL shortener NodeJS service
+URL shortener NodeJS/express/MongoDB microservice
