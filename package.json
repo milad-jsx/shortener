@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "url-shortener",
+    "url-shortener-microservice",
+    "nodejs-microservice"
+  ],
   "author": "Milad Mehdizade <milad.mehdizade1394@gmail.com>",
   "license": "GPL-3.0",
   "repository": {
