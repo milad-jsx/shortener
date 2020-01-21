@@ -1,2 +1,2 @@
 # shortener
-URL shortener service
+URL shortener NodeJS service
