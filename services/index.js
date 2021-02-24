@@ -1,9 +1,3 @@
-'use strict'
-
-const shortener = require('./shortener');
-
-const services = {
-    shortener: shortener
-}
-
-module.exports = services;
+module.exports = {
+    shortener: require('./shortener')
+};
