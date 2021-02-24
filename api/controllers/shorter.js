@@ -1,5 +1,6 @@
 const services = require('../../services');
 const models = require('../models');
+const { siteUrl } = require('../../config/keys');
 
 const shorter = {
     makeItShorter: async function (req, res, next) {
@@ -8,7 +9,7 @@ const shorter = {
 
             if (userUrl) {
                 const shortUrl = await models.urlMapper.add(userUrl);
-                res.status(200).json(`https://ilad-co.ir/shorter/${shortUrl}`);
+                res.status(200).json(`${siteUrl}/shorter/${shortUrl}`);
             }
             else {
                 res.status(422).json('Check your input, e.g https://domain.com');
