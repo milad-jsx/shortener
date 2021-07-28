@@ -2,6 +2,7 @@ const http = require('http');
 const url = require('url');
 const urlValidation = require('valid-url');
 const shortId = require('shortid');
+const { Crypto } = require('../helper');
 
 const shortener = {
     isURLValid: async function (req, res, next) {
@@ -16,7 +17,7 @@ const shortener = {
         return (userURL.pathname.startsWith('ed') && userURL.href);
     },
     shortIt: function (url) {
-        return 'ed' + shortId.generate().replace('_', '').toLowerCase();
+        return Crypto.generateUUID
     }
 };
 
