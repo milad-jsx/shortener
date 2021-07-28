@@ -1,3 +1,4 @@
 module.exports = {
-    ShortenerService: require('./shortener')
+    ShortenerService: require('./shortener'),
+    Database: require('./database'),
 };
