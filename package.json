@@ -4,7 +4,7 @@
   "description": "URL shortener service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/",
     "start": "node server.js"
   },
   "keywords": [
@@ -30,6 +30,7 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "mocha": "^7.0.0"
+    "chai": "^4.3.4",
+    "mocha": "^7.2.0"
   }
 }
