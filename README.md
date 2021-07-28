@@ -1,11 +1,19 @@
 # shortener
 URL shortener service implemented using NodeJS/express/MongoDB
 
-before:
-    ci
+setup:
+    ```npm ci```
 
-for test: 
-    npm run test
+test: 
+    ```npm run test```
 
-for start:
-    npm run start
+start:
+    ```npm run start```
+
+___
+__samples__ :
+ * Encode:
+    * http://localhost:3003/shorter/__www.example.com__
+ 
+ * Decode:
+    * http://localhost:3003/revert/__shortenedURL__
