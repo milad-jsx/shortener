@@ -1,4 +1,5 @@
 module.exports = {
     ShortenerService: require('./shortener'),
-    Database: require('./database'),
+    InMemoryDatabase: require('./inMemoryDatabase'),
+    MongoDBHelper: require('./mongoDatabase'),
 };
