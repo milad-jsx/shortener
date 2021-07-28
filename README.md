@@ -1,4 +1,11 @@
 # shortener
 URL shortener service implemented using NodeJS/express/MongoDB
 
-This code is just a boilerplate.
+before:
+    ci
+
+for test: 
+    npm run test
+
+for start:
+    npm run start
