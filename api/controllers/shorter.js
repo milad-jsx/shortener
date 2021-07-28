@@ -1,7 +1,7 @@
 const { ShortenerService } = require('../../services');
 const { siteUrl } = require('../../config/keys');
 const { URL } = require('../../helper');
-const { MongoDBHelper, InMemoryDatabase } = require('../../services/');
+const { InMemoryDatabase } = require('../../services/');
 
 const shorter = {
     makeItShorter: async function (inputURL) {
