@@ -1,46 +1,58 @@
-const services = require('../../services');
-const models = require('../models');
+const { ShortenerService } = require('../../services');
 const { siteUrl } = require('../../config/keys');
+const { URL } = require('../../helper');
+const { MongoDBHelper, InMemoryDatabase } = require('../../services/');
 
 const shorter = {
-    makeItShorter: async function (req, res, next) {
-        try {
-            const userUrl = await services.shortener.isURLValid(req, res, next);
+    makeItShorter: async function (inputURL) {
 
-            if (userUrl) {
-                const shortUrl = await models.urlMapper.add(userUrl);
-                res.status(200).json(`${siteUrl}/shorter/${shortUrl}`);
-            }
-            else {
-                res.status(422).json('Check your input, e.g https://domain.com');
+        let result = {
+            isSucceed: false,
+            shortenedURL: null
+        };
+
+        try {
+
+            const userSanitizedURL = URL.parseURL(inputURL);
+
+            const shortenerServiceResult = await ShortenerService.shortIt(userSanitizedURL);
+
+            if (shortenerServiceResult) {
+                const shortUrl = await InMemoryDatabase.Save(shortenerServiceResult.shortenedURL, userSanitizedURL);
+                result.isSucceed = true;
+                result.shortenedURL = `${siteUrl}/${shortenerServiceResult.shortenedURL}`;
             }
         }
-        catch (err) {
-            errorHandler(err, res);
+        catch (error) {
+            console.error(error);
         }
+        return result;
     },
-    revertToOriginal: async function (req, res, next) {
+    revertToOriginal: async function (shortenedURL) {
+        let result = {
+            isSucceed: false,
+            shortenedURL: null
+        };
+
         try {
-            const userUrl = await services.shortener.isURLValidToReverse(req, res, next);
+            const isValid = await ShortenerService.isURLValidToReverse(shortenedURL);
 
-            if (userUrl) {
-                const originalUrl = await models.urlMapper.get(userUrl);
-                res.status(200).json(originalUrl);
-            }
-            else {
-                res.status(422).json('Where did you get the link? Sorry, it does\'nt look valid!');
+            if (isValid) {
+
+                const originalUrl = await InMemoryDatabase.Get(shortenedURL);
+
+                if (originalUrl) {
+                    result.isSucceed = true;
+                    result.shortenedURL = originalUrl
+                }
+
             }
         }
-        catch (err) {
-            errorHandler(err, res);
+        catch (error) {
+            console.error(error);
         }
+        return result;
     }
-}
-
-function errorHandler(err, res) {
-    //TODO Log properly
-    console.log(`Error: ${err}`);
-    res.status(500).json(`Sorry, Please try again, something went wrong on my side!`);
 }
 
 module.exports = shorter;

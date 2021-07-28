@@ -2,19 +2,20 @@ const url = require('url');
 const urlValidation = require('valid-url');
 const shortId = require('shortid');
 const { Crypto } = require('../helper');
-const Database = require('./database');
+const Database = require('./inMemoryDatabase');
 
 const shortener = {
     isURLValid: async function (req, res, next) {
         const userURL = url.parse(req.body.url);
         return (urlValidation.isWebUri(userURL.href));
     },
-    isURLValidToReverse: function (req, res, next) {
-        const userURL = url.parse(req.params.url);
-        if (!userURL || !shortId.isValid(userURL.href)) return false;
+    isURLValidToReverse: function (rawInputURL) {
 
-        // ed is just a simple prefix; nothing especial;
-        return (userURL.pathname.startsWith('ed') && userURL.href);
+        const userURL = url.parse(rawInputURL);
+
+        if (!userURL) return false;
+
+        return userURL.href;
     },
     shortIt: async function (originalURL) {
 

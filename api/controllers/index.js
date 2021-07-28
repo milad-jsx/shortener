@@ -1,11 +1,7 @@
-'use strict'
-
-const about = require('./about');
 const shorter = require('./shorter');
 
-
 const controllers = {
-    about: about,
+    about: require('./about'),
     makeItShorter: shorter.makeItShorter,
     revertToOriginal: shorter.revertToOriginal
 }
