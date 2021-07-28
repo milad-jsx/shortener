@@ -1,3 +1,4 @@
 module.exports = {
-    Crypto: require('./crypto')
+    Crypto: require('./crypto'),
+    URL: require('./url'),
 }
