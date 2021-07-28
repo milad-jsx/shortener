@@ -2,7 +2,7 @@ const url = require('url');
 const urlValidation = require('valid-url');
 const shortId = require('shortid');
 const { Crypto } = require('../helper');
-const { Database } = require('./index');
+const Database = require('./database');
 
 const shortener = {
     isURLValid: async function (req, res, next) {
@@ -16,7 +16,7 @@ const shortener = {
         // ed is just a simple prefix; nothing especial;
         return (userURL.pathname.startsWith('ed') && userURL.href);
     },
-    shortIt: function (originalURL) {
+    shortIt: async function (originalURL) {
 
         const customResponse = {
             isSucceeded: false,
@@ -38,16 +38,16 @@ const shortener = {
 
         return customResponse;
     },
-    reverseShortenedURL: function (shortenedURLInput) {
+    reverseShortenedURL: async function (shortenedURLInput) {
 
         const customResponse = {
             isSucceeded: false,
             originalURL: null
         };
 
-        if (originalURL) {
+        if (shortenedURLInput) {
 
-            const originalURL = await Database.Get(shortenedURLInput);
+            const originalURL = await Database.Get(shortenedURLInput.shortenedURL);
 
             customResponse.isSucceeded = true;
             customResponse.originalURL = originalURL;
