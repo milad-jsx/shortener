@@ -1,0 +1,105 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Shortener docs",
+    "description": "Shortener API specification",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3003",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Shortener",
+      "description": "API to shorten long URLs"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/encode/{url}": {
+      "get": {
+        "tags": ["encode"],
+        "summary": "encodes long url to a shorter version",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "url",
+            "schema": {
+              "type": "string",
+              "required": true,
+              "description": "long URL to be shortened"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "exampleTinyUrl.com/b01e0b62e7f6df8ac310e021d197a1e1"
+            }
+          },
+          "422": {
+            "description": "Failed",
+            "schema": {
+              "type": "string",
+              "example": "Check your input, it should be like domainName.domainsuffixes."
+            }
+          },
+          "500": {
+            "description": "System Error",
+            "schema": {
+              "type": "string",
+              "example": "Error, please try again"
+            }
+          }
+        }
+      }
+    },
+    "/decode/{url}": {
+      "get": {
+        "tags": ["decode"],
+        "summary": "decodes a shortened URL to the original version",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "url",
+            "schema": {
+              "type": "string",
+              "required": true,
+              "description": "shortened URL to be reverted back to original"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "example.com"
+            }
+          },
+          "422": {
+            "description": "Failed",
+            "schema": {
+              "type": "boolean",
+              "example": "false"
+            }
+          },
+          "500": {
+            "description": "System Error",
+            "schema": {
+              "type": "string",
+              "example": "Error, please try again."
+            }
+          }
+        }
+      }
+    }
+  }
+}
