@@ -25,7 +25,7 @@ const mongoDbHelpers = {
         catch (error) {
             console.error('MongoDB Connection failed');
         }
-    }   
+    }, 
     add: (url) => {
         return new Promise((resolve, reject) => {
 
