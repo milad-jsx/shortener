@@ -12,6 +12,8 @@ app.use(
     swaggerUI.setup(swaggerDocument)
 );
 
+app.use(async (req, res, next) => { console.log(req.url); next() });
+
 const routes = require('./api/routes');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
