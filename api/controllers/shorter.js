@@ -15,12 +15,14 @@ const shorter = {
 
             const userSanitizedURL = URL.parseURL(inputURL);
 
-            const shortenerServiceResult = await ShortenerService.shortIt(userSanitizedURL);
+            if (userSanitizedURL) {
+                const shortenerServiceResult = await ShortenerService.shortIt(userSanitizedURL);
 
-            if (shortenerServiceResult) {
-                const shortUrl = await InMemoryDatabase.Save(shortenerServiceResult.shortenedURL, userSanitizedURL);
-                result.isSucceed = true;
-                result.shortenedURL = `${siteUrl}/${shortenerServiceResult.shortenedURL}`;
+                if (shortenerServiceResult) {
+                    const shortUrl = await InMemoryDatabase.Save(shortenerServiceResult.shortenedURL, userSanitizedURL);
+                    result.isSucceed = true;
+                    result.shortenedURL = `${siteUrl}/${shortenerServiceResult.shortenedURL}`;
+                }
             }
         }
         catch (error) {
