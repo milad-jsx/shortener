@@ -1,12 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const { dbUrl } = require('./config/keys');
 
 const app = express();
 const port = 3003;
 
-mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true });
+const swaggerUI = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
+app.use(
+    '/docs',
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerDocument)
+);
+
+app.use(async (req, res, next) => { console.log(req.url); next() });
 
 const routes = require('./api/routes');
 app.use(bodyParser.json());

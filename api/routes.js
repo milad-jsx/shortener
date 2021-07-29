@@ -6,7 +6,7 @@ module.exports = function (app) {
     app.route('/about')
         .get(controller.about);
 
-    app.route('/shorter/:url')
+    app.route('/encode/:url')
         .get(async (req, res, next) => {
 
             let resultOfOperation = {
@@ -30,7 +30,7 @@ module.exports = function (app) {
 
                     resultOfOperation = {
                         status: 422,
-                        data: 'Check your input, e.g https://domain.com'
+                        data: 'Check your input, it should be like domainName.domainsuffixes.'
                     }
 
                 }
@@ -43,18 +43,34 @@ module.exports = function (app) {
                 console.error(error);
             }
 
-            res.json(resultOfOperation);
+            res.status(resultOfOperation.status).json(resultOfOperation.data);
         });
 
-    app.route('/revert/:url')
+    app.route('/decode/:url')
         .get(async (req, res, next) => {
 
-            const result = await controller.revertToOriginal(req.params.url);
+            let resultOfOperation = {
+                status: 422,
+                data: false
+            };
 
-            if (result.isSucceed)
-                res.status(200).json(result.shortenedURL);
-            else
-                res.status(422).json(false);
+            try {
 
+                const result = await controller.revertToOriginal(req.params.url);
+
+                if (result.isSucceed)
+                    resultOfOperation = {
+                        status: 200,
+                        data: result.shortenedURL
+                    }
+            }
+            catch (error) {
+                resultOfOperation = {
+                    status: 500,
+                    data: 'Error, please try again.'
+                }
+                console.error(error);
+            }
+            res.status(resultOfOperation.status).json(resultOfOperation.data);
         });
 };
