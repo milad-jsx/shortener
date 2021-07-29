@@ -15,6 +15,17 @@ const urlModel = new Schema({
 
 const mongoDbHelpers = {
     model: mongoose.model('UrlModel', urlModel),
+    connect: async () => {
+        try {
+            const { dbUrl } = require('../config/keys');
+
+            await mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true });
+            console.log('MongoDB Connected');
+        }
+        catch (error) {
+            console.error('MongoDB Connection failed');
+        }
+    }   
     add: (url) => {
         return new Promise((resolve, reject) => {
 
